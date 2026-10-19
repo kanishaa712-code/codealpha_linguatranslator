@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lingua AI Translator</title>
+  <meta name="description" content="Translate text between languages with Lingua AI Translator.">
+  <meta name="theme-color" content="#1b1140">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="bg" aria-hidden="true"><span class="orb orb-a"></span><span class="orb orb-b"></span><span class="orb orb-c"></span></div>
+
+  <header class="site-header">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 32 32" aria-hidden="true">
+        <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffb86b"/><stop offset="1" stop-color="#ff5fa2"/></linearGradient></defs>
+        <rect width="32" height="32" rx="9" fill="url(#lg)"/>
+        <path d="M8 11h9M12.5 8v3m-3.2 0c.6 3.2 2.6 5.4 5.2 6.6M16 11c-.5 3.4-2.8 6-6.4 7.4M18 24l3.5-9 3.5 9m-5.7-3h4.4" fill="none" stroke="#1b1140" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="brand-name">Lingua <em>AI</em></span>
+    </div>
+    <span class="provider-badge" id="providerBadge" hidden></span>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <h1>Say it in <span class="grad-text" id="heroWord">any language</span>.</h1>
+      <p>Type or paste your text, pick languages, and get a clean translation in seconds.</p>
+    </section>
+
+    <div id="banner" class="banner" role="alert" aria-live="assertive" hidden>
+      <span id="bannerText"></span>
+      <button type="button" class="banner-close" id="bannerClose" aria-label="Dismiss message">&times;</button>
+    </div>
+
+    <section class="translator" aria-label="Translator">
+      <!-- Source card -->
+      <article class="card card-in">
+        <div class="card-head">
+          <label class="sr-only" for="sourceLang">Source language</label>
+          <div class="select-wrap">
+            <select id="sourceLang" disabled><option>Loading languages…</option></select>
+          </div>
+          <span class="detected" id="detectedBadge" hidden></span>
+        </div>
+        <label class="sr-only" for="inputText">Text to translate</label>
+        <textarea style="color: black;" id="inputText" maxlength="{{ max_chars }}" placeholder="Enter text to translate…" spellcheck="true" rows="8"></textarea>
+        <div class="card-foot">
+          <span class="counter" id="counter" aria-live="polite">0 / {{ max_chars }}</span>
+          <div class="actions">
+            <button type="button" class="btn ghost" id="clearBtn" title="Clear both boxes">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+              Clear
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Swap -->
+      <button type="button" class="swap" id="swapBtn" title="Swap languages" aria-label="Swap source and target languages">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4 3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7"/></svg>
+      </button>
+
+      <!-- Target card -->
+      <article class="card card-out">
+        <div class="card-head">
+          <label class="sr-only" for="targetLang">Target language</label>
+          <div class="select-wrap">
+            <select id="targetLang" disabled><option>Loading languages…</option></select>
+          </div>
+        </div>
+        <div class="output" id="output" aria-live="polite" tabindex="0">
+          <p class="placeholder" id="placeholder">Your translation will appear here.</p>
+          <div class="skeleton" id="skeleton" hidden><span></span><span></span><span></span></div>
+          <p class="result" id="resultText" hidden></p>
+        </div>
+        <div class="card-foot">
+          <span class="meta" id="resultMeta"></span>
+          <div class="actions">
+            <button type="button" class="btn ghost" id="copyBtn" disabled title="Copy translation">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>
+              <span id="copyLabel">Copy</span>
+            </button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <div class="cta">
+      <button type="button" class="btn primary" id="translateBtn" disabled>
+        <span class="spinner" id="spinner" hidden aria-hidden="true"></span>
+        <span id="translateLabel">Translate</span>
+      </button>
+      <span class="hint">or press <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Enter</kbd></span>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>Lingua AI Translator &middot; CodeAlpha Artificial Intelligence Internship project</p>
+  </footer>
+
+  <script>window.LINGUA = { maxChars: {{ max_chars }} };</script>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
